@@ -18,6 +18,8 @@ export type DietType = 'Vegetarian' | 'Non-veg' | 'Egg-only' | 'Vegan';
 
 export interface UserPreferences {
   name: string;
+  email?: string;
+  password?: string;
   diet: DietType;
   baseTime: number; // minutes
   busyDays: Record<string, number>;

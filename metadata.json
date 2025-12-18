@@ -1,7 +1,5 @@
 {
   "name": "MealMate",
   "description": "Plan dinners without the 9 PM panic. Realistic weekly meal plans based on your diet, time, and pantry ingredients.",
-  "requestFramePermissions": [
-    "camera"
-  ]
+  "requestFramePermissions": []
 }
