@@ -3,16 +3,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MealMate</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MealMate | Your Personal Culinary Strategist</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F8FAFC; }
+        :root {
+            --brand-primary: #064E3B;
+            --brand-accent: #D97706;
+            --bg-base: #FDFCF7;
+        }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #F1F3EF; 
+            color: #1A1C19;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .page-enter {
+            animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-premium {
+            background: white;
+            border: 1px solid rgba(0,0,0,0.04);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-premium:active {
+            transform: scale(0.97);
+        }
+        
+        /* Interactive feedback */
+        .btn-press:active {
+            transform: scale(0.96);
+        }
+
+        /* Ensure images and videos are responsive */
+        img, video {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
 <script type="importmap">
 {
@@ -25,7 +67,7 @@
 }
 </script>
 </head>
-<body class="text-slate-900">
+<body class="selection:bg-emerald-100">
     <div id="root"></div>
 </body>
 </html>

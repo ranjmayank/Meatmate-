@@ -6,52 +6,47 @@ import { DAYS, SUGGESTED_INGREDIENTS } from './constants';
 
 // --- Illustrations ---
 
-const IllustrationSplash = () => (
-  <svg viewBox="0 0 200 200" className="w-48 h-48 drop-shadow-2xl">
-    <circle cx="100" cy="100" r="90" fill="#EEF2FF" />
-    <path d="M60 140 Q100 160 140 140" stroke="#4F46E5" strokeWidth="6" fill="none" strokeLinecap="round" />
-    <rect x="70" y="60" width="60" height="70" rx="8" fill="#FFF" stroke="#4F46E5" strokeWidth="4" />
-    <path d="M80 80 H120 M80 95 H120 M80 110 H100" stroke="#E0E7FF" strokeWidth="4" strokeLinecap="round" />
-    <circle cx="150" cy="70" r="15" fill="#10B981" />
-    <path d="M145 70 L148 73 L155 66" stroke="#FFF" strokeWidth="3" fill="none" />
+const IllustrationChef = () => (
+  <svg viewBox="0 0 200 200" className="w-64 h-64 md:w-72 md:h-72 drop-shadow-2xl transition-all duration-500">
+    <defs>
+      <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style={{ stopColor: '#064E3B', stopOpacity: 1 }} />
+        <stop offset="100%" style={{ stopColor: '#065F46', stopOpacity: 1 }} />
+      </linearGradient>
+    </defs>
+    <circle cx="100" cy="100" r="95" fill="#FDFCF7" />
+    <path d="M50 140 Q100 170 150 140" stroke="url(#grad1)" strokeWidth="4" fill="none" strokeLinecap="round" />
+    <rect x="75" y="45" width="50" height="60" rx="4" fill="white" stroke="#064E3B" strokeWidth="3" />
+    <path d="M85 60 H115 M85 75 H115" stroke="#ECFDF5" strokeWidth="3" strokeLinecap="round" />
+    <circle cx="160" cy="80" r="24" fill="#D97706" opacity="0.95" />
+    <path d="M154 80 L158 84 L168 74" stroke="white" strokeWidth="4" fill="none" strokeLinecap="round" />
   </svg>
 );
 
-const IllustrationEmptyPantry = () => (
-  <svg viewBox="0 0 200 200" className="w-40 h-40 opacity-50">
-    <rect x="50" y="40" width="100" height="120" rx="10" fill="none" stroke="#94A3B8" strokeWidth="4" strokeDasharray="8 8" />
-    <path d="M80 70 H120 M80 100 H120 M80 130 H120" stroke="#CBD5E1" strokeWidth="4" strokeLinecap="round" />
-  </svg>
-);
-
-const IllustrationLoading = () => (
-  <div className="relative">
-    <svg viewBox="0 0 100 100" className="w-32 h-32">
-      <path d="M30 70 Q50 90 70 70 L75 30 Q50 10 25 30 Z" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" className="animate-bounce" />
-      <path d="M40 40 Q50 50 60 40" stroke="white" strokeWidth="3" fill="none" />
+const IllustrationEmpty = () => (
+  <div className="flex flex-col items-center opacity-40 py-12">
+    <svg viewBox="0 0 100 100" className="w-40 h-40 grayscale">
+      <path d="M20 40 H80 V80 Q80 90 70 90 H30 Q20 90 20 80 Z" fill="none" stroke="currentColor" strokeWidth="2" />
+      <path d="M40 30 L50 20 L60 30" stroke="currentColor" strokeWidth="2" fill="none" />
     </svg>
-    <div className="absolute top-0 left-1/2 -translate-x-1/2 flex gap-1">
-      <div className="w-1.5 h-4 bg-indigo-200 rounded-full animate-pulse delay-75" />
-      <div className="w-1.5 h-6 bg-indigo-100 rounded-full animate-pulse delay-150" />
-      <div className="w-1.5 h-4 bg-indigo-200 rounded-full animate-pulse delay-300" />
-    </div>
+    <p className="mt-6 font-serif italic text-xl">The kitchen is quiet...</p>
   </div>
 );
 
-// --- Sub-Components ---
+// --- Styled Components ---
 
 const Button: React.FC<{ 
   onClick?: () => void; 
   children: React.ReactNode; 
-  variant?: 'primary' | 'secondary' | 'tertiary'; 
+  variant?: 'primary' | 'secondary' | 'ghost'; 
   className?: string;
   disabled?: boolean;
 }> = ({ onClick, children, variant = 'primary', className = '', disabled }) => {
-  const base = "w-full py-4.5 px-6 rounded-2xl font-bold transition-all duration-300 text-center flex items-center justify-center gap-2 tracking-tight";
+  const base = "w-full py-5 px-10 rounded-2xl font-extrabold transition-all duration-300 flex items-center justify-center gap-4 tracking-wide text-base btn-press disabled:opacity-50 disabled:cursor-not-allowed";
   const styles = {
-    primary: "bg-slate-900 text-white hover:bg-slate-800 active:scale-95 shadow-xl shadow-slate-200 disabled:opacity-50",
-    secondary: "bg-white text-slate-900 border-2 border-slate-100 hover:border-slate-200 active:scale-95 shadow-sm",
-    tertiary: "bg-transparent text-slate-400 hover:text-slate-600 underline underline-offset-8"
+    primary: "bg-[#064E3B] text-white shadow-xl shadow-emerald-900/20 hover:bg-[#08634b] hover:-translate-y-0.5",
+    secondary: "bg-white text-[#064E3B] border-2 border-emerald-50 shadow-md hover:border-emerald-200 hover:bg-emerald-50/10",
+    ghost: "bg-transparent text-emerald-800/70 hover:text-emerald-900 underline underline-offset-8 decoration-emerald-200"
   };
   return (
     <button disabled={disabled} onClick={onClick} className={`${base} ${styles[variant]} ${className}`}>
@@ -60,17 +55,17 @@ const Button: React.FC<{
   );
 };
 
-const Header: React.FC<{ title: string; onBack?: () => void; rightIcon?: React.ReactNode }> = ({ title, onBack, rightIcon }) => (
-  <header className="flex items-center justify-between px-6 py-6 sticky top-0 bg-white/80 backdrop-blur-xl z-30">
-    <div className="flex items-center gap-4">
+const Header: React.FC<{ title: string; onBack?: () => void; right?: React.ReactNode }> = ({ title, onBack, right }) => (
+  <header className="flex items-center justify-between px-6 py-10 sticky top-0 bg-[#FDFCF7]/95 backdrop-blur-2xl z-40 border-b border-emerald-50/60 shadow-sm">
+    <div className="flex items-center gap-6">
       {onBack && (
-        <button onClick={onBack} className="p-2.5 -ml-2 text-slate-900 bg-slate-50 hover:bg-slate-100 rounded-xl transition-colors border border-slate-100">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" /></svg>
+        <button onClick={onBack} className="w-12 h-12 flex items-center justify-center text-emerald-900 bg-white border border-emerald-100 rounded-2xl shadow-sm hover:bg-emerald-50 transition-all btn-press">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" /></svg>
         </button>
       )}
-      <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">{title}</h1>
+      <h1 className="text-3xl font-bold text-[#064E3B] tracking-tight">{title}</h1>
     </div>
-    {rightIcon}
+    {right}
   </header>
 );
 
@@ -81,21 +76,24 @@ const Toast: React.FC<{ message: string; onClear: () => void }> = ({ message, on
   }, [onClear]);
 
   return (
-    <div className="fixed bottom-10 left-6 right-6 z-[300] bg-slate-900 text-white px-6 py-4 rounded-2xl text-sm font-bold shadow-2xl animate-in fade-in slide-in-from-bottom-8 flex items-center justify-between">
-      <span>{message}</span>
-      <button onClick={onClear} className="opacity-50 hover:opacity-100">
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+    <div className="fixed bottom-8 left-6 right-6 z-[300] bg-[#1A1C19] text-[#FDFCF7] px-10 py-6 rounded-[2.5rem] text-sm md:text-base font-bold shadow-2xl animate-in fade-in slide-in-from-bottom-12 flex items-center justify-between border border-white/5">
+      <div className="flex items-center gap-4">
+        <span className="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
+        {message}
+      </div>
+      <button onClick={onClear} className="opacity-40 hover:opacity-100 transition-opacity p-2">
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" /></svg>
       </button>
     </div>
   );
 };
 
-// --- Main App ---
+// --- Main Application ---
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>('SPLASH');
   const [prefs, setPrefs] = useState<UserPreferences>(() => {
-    const saved = localStorage.getItem('mealmate_prefs');
+    const saved = localStorage.getItem('mealmate_prefs_v2');
     return saved ? JSON.parse(saved) : {
       name: 'Guest',
       diet: 'Vegetarian',
@@ -106,7 +104,7 @@ export default function App() {
   });
   
   const [pantry, setPantry] = useState<Ingredient[]>(() => {
-    const saved = localStorage.getItem('mealmate_pantry');
+    const saved = localStorage.getItem('mealmate_pantry_v2');
     return saved ? JSON.parse(saved) : [];
   });
 
@@ -125,55 +123,33 @@ export default function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const loadingHints = [
-    "Synchronizing your culinary preferences",
-    "Auditing your virtual pantry",
-    "Optimizing for maximum nutrition",
-    "Crafting your customized dinner logic"
+    "Consulting our flavor archives",
+    "Matching with your pantry's inventory",
+    "Optimizing prep times for your schedule",
+    "Finalizing your bespoke culinary week"
   ];
 
-  // Persistence
-  useEffect(() => {
-    localStorage.setItem('mealmate_prefs', JSON.stringify(prefs));
-  }, [prefs]);
+  // Logic & Effects
+  useEffect(() => localStorage.setItem('mealmate_prefs_v2', JSON.stringify(prefs)), [prefs]);
+  useEffect(() => localStorage.setItem('mealmate_pantry_v2', JSON.stringify(pantry)), [pantry]);
 
-  useEffect(() => {
-    localStorage.setItem('mealmate_pantry', JSON.stringify(pantry));
-  }, [pantry]);
-
-  // Loading hints animation
   useEffect(() => {
     let interval: any;
     if (screen === 'GENERATE_LOADING') {
-      interval = setInterval(() => {
-        setLoadingHintIndex(i => (i + 1) % loadingHints.length);
-      }, 1800);
+      interval = setInterval(() => setLoadingHintIndex(i => (i + 1) % loadingHints.length), 2200);
     }
     return () => clearInterval(interval);
   }, [screen]);
 
   const showToast = (msg: string) => setToast(msg);
-
-  const navigate = (to: Screen) => {
-    setSearchQuery('');
-    setScreen(to);
-    window.scrollTo(0,0);
-  }
-
-  const handleLogin = (asGuest: boolean) => {
-    if (asGuest) {
-      navigate('WELCOME');
-    } else {
-      setPrefs(p => ({ ...p, name: 'Riya', isLoggedIn: true }));
-      navigate('DASHBOARD');
-    }
-  };
+  const navigate = (to: Screen) => { setScreen(to); window.scrollTo({ top: 0, behavior: 'smooth' }); };
 
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
       if (videoRef.current) videoRef.current.srcObject = stream;
     } catch (err) {
-      alert("Camera access denied. Please enable it in settings.");
+      showToast("Camera access required for scanning.");
       navigate('PANTRY');
     }
   };
@@ -187,17 +163,15 @@ export default function App() {
       canvas.getContext('2d')?.drawImage(video, 0, 0);
       const dataUrl = canvas.toDataURL('image/jpeg');
       const base64 = dataUrl.split(',')[1];
-      
       const stream = video.srcObject as MediaStream;
       stream.getTracks().forEach(t => t.stop());
-
       setScreen('GENERATE_LOADING'); 
       try {
         const items = await gemini.scanPantryImage(base64);
         setDetectedIngredients(items);
         setScreen('SCAN_REVIEW');
       } catch (e) {
-        showToast("Scan failed. Try manual input.");
+        showToast("Scan unsuccessful. Please add manually.");
         navigate('PANTRY');
       }
     }
@@ -211,60 +185,12 @@ export default function App() {
         if (plan && plan.length > 0) {
           setMealPlan(plan);
           setScreen('WEEKLY_PLAN');
-        } else {
-          throw new Error("No plan returned");
-        }
+        } else throw new Error();
       } catch (e) {
-        showToast("AI took too long. Retrying...");
+        showToast("AI Strategist is busy. Let's try again.");
         setScreen('DASHBOARD');
       }
-    }, 100);
-  };
-
-  const openSwap = async (meal: Meal, index: number) => {
-    setActiveMeal({ meal, index });
-    setIsLoadingSwaps(true);
-    setIsMovingDay(false);
-    try {
-      const suggestions = await gemini.getSwapSuggestions(meal.name, prefs, pantry);
-      setSwapOptions(suggestions);
-    } catch (e) {
-      showToast("Could not fetch alternatives.");
-    } finally {
-      setIsLoadingSwaps(false);
-    }
-  };
-
-  const applySwap = (newMeal: Partial<Meal>) => {
-    if (!activeMeal) return;
-    const updated = [...mealPlan];
-    updated[activeMeal.index] = { 
-      ...updated[activeMeal.index], 
-      ...newMeal,
-      day: updated[activeMeal.index].day 
-    };
-    setMealPlan(updated);
-    setActiveMeal(null);
-    showToast("Plan updated successfully");
-  };
-
-  const moveMealToDay = (targetDay: string) => {
-    if (!activeMeal) return;
-    const updated = [...mealPlan];
-    const sourceIdx = activeMeal.index;
-    const targetIdx = updated.findIndex(m => m.day === targetDay);
-    
-    if (targetIdx !== -1) {
-      const sourceMealData = { ...updated[sourceIdx] };
-      const targetMealData = { ...updated[targetIdx] };
-      updated[sourceIdx] = { ...targetMealData, day: sourceMealData.day };
-      updated[targetIdx] = { ...sourceMealData, day: targetMealData.day };
-    }
-    
-    setMealPlan(updated);
-    setActiveMeal(null);
-    setIsMovingDay(false);
-    showToast(`Swapped with ${targetDay}`);
+    }, 1500);
   };
 
   const togglePantryItem = (item: Ingredient | {name: string, id?: string}) => {
@@ -273,7 +199,7 @@ export default function App() {
       setPantry(prev => prev.filter(p => p.name.toLowerCase() !== item.name.toLowerCase()));
       showToast(`Removed ${item.name}`);
     } else {
-      const newItem = { ...item, id: item.id || Math.random().toString(36).substr(2, 9), category: 'Added' };
+      const newItem = { ...item, id: item.id || Math.random().toString(36).substr(2, 9), category: 'Manual' };
       setPantry(prev => [...prev, newItem as Ingredient]);
       showToast(`Added ${item.name}`);
     }
@@ -281,196 +207,228 @@ export default function App() {
 
   const addCustomPantryItem = (name: string) => {
     if (!name.trim()) return;
-    if (pantry.some(p => p.name.toLowerCase() === name.trim().toLowerCase())) {
-      showToast(`${name.trim()} is already here`);
-      setSearchQuery('');
-      return;
-    }
     togglePantryItem({ name: name.trim() });
     setSearchQuery('');
-  }
+  };
+
+  useEffect(() => {
+    if (activeMeal) {
+      const fetchSwaps = async () => {
+        setIsLoadingSwaps(true);
+        try {
+          const suggestions = await gemini.getSwapSuggestions(activeMeal.meal.name, prefs, pantry);
+          setSwapOptions(suggestions);
+        } catch (e) {
+          console.error("Failed to fetch swaps", e);
+        } finally {
+          setIsLoadingSwaps(false);
+        }
+      };
+      fetchSwaps();
+    } else {
+      setSwapOptions([]);
+    }
+  }, [activeMeal, prefs, pantry]);
 
   // --- Screens ---
 
   const renderSplash = () => (
-    <div className="min-h-screen flex flex-col p-8 bg-white selection:bg-indigo-100">
-      <div className="flex-1 flex flex-col justify-center items-center text-center space-y-10">
-        <IllustrationSplash />
-        <div className="space-y-4">
-          <h1 className="text-5xl font-black text-slate-900 leading-[1.1] tracking-tighter">Dinner planning, solved.</h1>
-          <p className="text-xl text-slate-500 font-medium max-w-xs mx-auto leading-relaxed">Delicious, realistic weekly plans tailored to your diet and your fridge.</p>
+    <div className="min-h-screen flex flex-col p-10 bg-[#FDFCF7] page-enter">
+      <div className="flex-1 flex flex-col justify-center items-center text-center space-y-16">
+        <IllustrationChef />
+        <div className="space-y-8">
+          <h1 className="text-6xl font-serif text-[#064E3B] leading-[1.1] italic tracking-tight">Dinner Planning,<br/>Perfectly Seasoned.</h1>
+          <p className="text-xl text-emerald-900/60 font-medium max-w-sm mx-auto leading-relaxed">Sophisticated, realistic meal plans tailored to your life and your kitchen stock.</p>
         </div>
       </div>
-      <div className="space-y-4 pb-10">
-        <Button onClick={() => handleLogin(true)}>Get Started</Button>
-        <Button variant="secondary" onClick={() => navigate('LOGIN')}>Log In</Button>
+      <div className="space-y-6 pb-16">
+        <Button onClick={() => navigate('WELCOME')}>Get Started</Button>
+        <Button variant="secondary" onClick={() => navigate('LOGIN')}>Existing Member</Button>
       </div>
     </div>
   );
 
   const renderDashboard = () => (
-    <div className="min-h-screen p-6 pb-32 bg-slate-50 flex flex-col gap-8 overflow-y-auto">
-      <div className="flex justify-between items-center mt-4">
-        <div className="space-y-1">
-          <p className="text-slate-500 font-bold text-xs uppercase tracking-widest">Dashboard</p>
-          <h2 className="text-3xl font-black text-slate-900">Hey, {prefs.name}</h2>
-        </div>
-        <button onClick={() => navigate('PROFILE')} className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center border-2 border-slate-100 shadow-sm active:scale-95 transition-all overflow-hidden">
-          <div className="w-full h-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-black text-xl">
-            {prefs.name[0]}
-          </div>
+    <div className="min-h-screen p-6 pb-40 bg-[#FDFCF7] page-enter flex flex-col gap-12 max-w-lg mx-auto overflow-x-hidden">
+      <Header title={`Chef ${prefs.name}`} right={
+        <button onClick={() => navigate('PROFILE')} className="w-14 h-14 bg-white border-2 border-emerald-50 rounded-[1.25rem] flex items-center justify-center text-[#064E3B] font-extrabold shadow-sm active:scale-90 transition-all">
+          {prefs.name[0]}
         </button>
-      </div>
+      } />
 
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-5">
         {[
-          { label: 'Diet', value: prefs.diet, icon: '🥗' },
-          { label: 'Time', value: `${prefs.baseTime}m`, icon: '⏱️' },
-          { label: 'Pantry', value: pantry.length, icon: '🥫' }
+          { icon: '🥗', val: prefs.diet, label: 'Diet' },
+          { icon: '⏱️', val: `${prefs.baseTime}m`, label: 'Prep' },
+          { icon: '📦', val: pantry.length, label: 'Stock' }
         ].map((stat, i) => (
-          <div key={i} className="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm text-center space-y-1">
-            <span className="text-lg">{stat.icon}</span>
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">{stat.label}</p>
-            <p className="text-xs font-extrabold text-slate-900">{stat.value}</p>
+          <div key={i} className="bg-white p-6 rounded-[2.5rem] shadow-sm border border-emerald-50 text-center space-y-2 transition-transform hover:scale-105">
+            <span className="text-3xl block">{stat.icon}</span>
+            <p className="text-[11px] font-bold text-emerald-900/40 uppercase tracking-widest">{stat.label}</p>
+            <p className="text-sm font-black text-emerald-900">{stat.val}</p>
           </div>
         ))}
       </div>
 
       <button 
-        onClick={generateWeek} 
-        className="group relative bg-slate-900 p-10 rounded-[40px] text-left text-white shadow-2xl shadow-slate-200 overflow-hidden active:scale-[0.98] transition-all"
+        onClick={generateWeek}
+        className="group relative bg-[#064E3B] p-12 rounded-[3.5rem] text-left text-white shadow-2xl shadow-emerald-900/20 overflow-hidden card-premium"
       >
-        <div className="relative z-10 space-y-3">
-          <div className="inline-flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-white/10">
-            <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-            AI Generator Ready
+        <div className="relative z-10 space-y-6">
+          <div className="inline-flex items-center gap-3 bg-white/10 px-5 py-2 rounded-full text-[11px] font-bold uppercase tracking-[0.2em] border border-white/5 backdrop-blur-md">
+            <span className="w-2 h-2 bg-emerald-300 rounded-full animate-pulse shadow-[0_0_8px_rgba(110,231,183,0.8)]" />
+            Strategist Online
           </div>
-          <h2 className="text-3xl font-black leading-none tracking-tighter">Build this week's plan</h2>
-          <p className="opacity-60 text-sm font-medium">Custom Mon–Sun dinner schedule in 10s.</p>
+          <h2 className="text-5xl font-serif italic leading-[1] tracking-tight">Curate my<br/>next week</h2>
+          <p className="text-emerald-100/60 text-lg font-medium leading-relaxed">Bespoke Mon–Sun dinner schedule synchronized with your preferences.</p>
         </div>
-        <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
-           <svg className="w-32 h-32" fill="currentColor" viewBox="0 0 24 24"><path d="M11 2L9 4.96l-3.32-.4L3.73 7.5l2.42 2.42-1.01 3.32 3.09 1.15 1.15 3.09 3.32-1.01 2.42 2.42 2.94-1.95-.4-3.32L22 11l-2.96-2L19.44 5.68l-3.32.4L13.18 3.14 11 2z"/></svg>
+        <div className="absolute -top-12 -right-12 opacity-[0.08] rotate-12 group-hover:rotate-45 group-hover:scale-125 transition-all duration-700 ease-out">
+          <svg className="w-64 h-64" fill="white" viewBox="0 0 24 24"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
         </div>
       </button>
 
-      <div className="space-y-4">
-        <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest ml-1">Essentials</h3>
-        <div className="grid grid-cols-1 gap-4">
-          <button 
-            onClick={() => navigate('PANTRY')} 
-            className="bg-white p-6 rounded-[32px] border-2 border-slate-50 shadow-sm text-left flex items-center justify-between group active:scale-[0.98] transition-all hover:border-indigo-100"
-          >
-            <div className="flex items-center gap-5">
-              <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-all text-indigo-600">
-                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
-              </div>
-              <div>
-                <p className="font-black text-slate-900 text-lg tracking-tight">Virtual Pantry</p>
-                <p className="text-sm text-slate-400 font-medium">Track {pantry.length} current ingredients</p>
-              </div>
+      <div className="space-y-8">
+        <h3 className="text-xs font-bold text-emerald-900/30 uppercase tracking-[0.3em] ml-4">Kitchen Management</h3>
+        <button 
+          onClick={() => navigate('PANTRY')} 
+          className="w-full bg-white p-10 rounded-[3rem] border border-emerald-50 shadow-md flex items-center justify-between group card-premium"
+        >
+          <div className="flex items-center gap-8">
+            <div className="w-20 h-20 bg-emerald-50 rounded-[2rem] flex items-center justify-center text-emerald-700 group-hover:bg-[#064E3B] group-hover:text-white transition-all duration-500 shadow-inner">
+              <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
             </div>
-            <svg className="w-5 h-5 text-slate-300 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 5l7 7-7 7" /></svg>
-          </button>
-        </div>
+            <div>
+              <p className="text-2xl font-bold text-emerald-900 tracking-tight">Virtual Pantry</p>
+              <p className="text-base text-emerald-900/40 font-medium">Monitoring {pantry.length} essentials</p>
+            </div>
+          </div>
+          <div className="w-12 h-12 flex items-center justify-center text-emerald-200 group-hover:text-[#064E3B] group-hover:translate-x-2 transition-all duration-300">
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 5l7 7-7 7" /></svg>
+          </div>
+        </button>
       </div>
     </div>
   );
 
-  const renderPantry = () => (
-    <div className="min-h-screen p-6 bg-white flex flex-col relative overflow-hidden">
-      <Header title="Your Pantry" onBack={() => navigate('DASHBOARD')} />
-      <div className="flex-1 space-y-8 overflow-y-auto mt-4 pb-32 no-scrollbar">
-        <div className="space-y-6">
-          <button 
-            onClick={() => { setScreen('SCAN_CAMERA'); startCamera(); }}
-            className="w-full bg-slate-900 p-10 rounded-[40px] flex flex-col items-center gap-4 hover:bg-slate-800 transition-all shadow-xl active:scale-95"
+  const renderWeeklyPlan = () => (
+    <div className="min-h-screen p-6 pb-48 bg-[#FDFCF7] page-enter flex flex-col gap-8 no-scrollbar overflow-y-auto max-w-lg mx-auto">
+      <Header title="Weekly Menu" onBack={() => navigate('DASHBOARD')} />
+      <div className="space-y-6">
+        {mealPlan.map((meal, idx) => (
+          <div 
+            key={idx} 
+            onClick={() => setActiveMeal({ meal, index: idx })}
+            className="bg-white p-10 rounded-[3rem] shadow-sm border border-emerald-50 flex gap-8 items-center group card-premium animate-in fade-in slide-in-from-bottom duration-700"
+            style={{ animationDelay: `${idx * 120}ms` }}
           >
-            <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-md">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-            </div>
-            <div className="text-center">
-              <p className="font-black text-white text-xl tracking-tight">AI Fridge Scanner</p>
-              <p className="text-sm text-slate-400 font-medium mt-1">Instant detection via camera</p>
-            </div>
-          </button>
-
-          <div className="relative group">
-            <input 
-              className="w-full p-5 pl-14 bg-slate-50 rounded-2xl outline-none border-2 border-transparent focus:border-slate-900 focus:bg-white transition-all font-bold placeholder:text-slate-300" 
-              placeholder="Search or add manually..." 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && addCustomPantryItem(searchQuery)}
-            />
-            <svg className="w-6 h-6 absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-slate-900 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-            {searchQuery.trim().length > 0 && (
-              <button onClick={() => addCustomPantryItem(searchQuery)} className="absolute right-4 top-1/2 -translate-y-1/2 bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-black shadow-lg">ADD</button>
-            )}
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Suggestions</h3>
-            <div className="flex flex-wrap gap-2">
-              {SUGGESTED_INGREDIENTS.filter(i => i.name.toLowerCase().includes(searchQuery.toLowerCase())).map(item => {
-                const isSelected = pantry.find(p => p.name.toLowerCase() === item.name.toLowerCase());
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => togglePantryItem(item)}
-                    className={`px-5 py-2.5 rounded-full text-sm font-bold border-2 transition-all active:scale-95 ${
-                      isSelected ? 'bg-slate-900 border-slate-900 text-white shadow-md' : 'bg-white border-slate-100 text-slate-600 hover:border-slate-200'
-                    }`}
-                  >
-                    {item.name}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="space-y-4 pt-4">
-            <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Your Inventory ({pantry.length})</h3>
-            {pantry.length > 0 ? (
-              <div className="grid grid-cols-1 gap-3">
-                {pantry.map(item => (
-                  <div key={item.id} className="flex items-center justify-between p-5 bg-white rounded-2xl border-2 border-slate-50 shadow-sm animate-in fade-in slide-in-from-left duration-300">
-                    <span className="font-bold text-slate-900 text-lg capitalize">{item.name}</span>
-                    <button onClick={() => togglePantryItem(item)} className="p-2 hover:bg-rose-50 hover:text-rose-500 text-slate-300 rounded-xl transition-all">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
-                    </button>
-                  </div>
+            <div className="flex-1 space-y-5">
+              <div className="flex justify-between items-center">
+                <p className="text-xs font-black text-[#D97706] uppercase tracking-[0.3em]">{meal.day}</p>
+                {meal.time > 0 && <span className="text-[11px] font-bold bg-emerald-50 text-[#064E3B] px-4 py-1.5 rounded-full uppercase tracking-wider">{meal.time}m</span>}
+              </div>
+              <h3 className="text-3xl font-serif italic text-emerald-900 leading-tight tracking-tight">{meal.name}</h3>
+              <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pt-2">
+                {meal.isPantryFriendly && (
+                  <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-4 py-2 rounded-xl uppercase tracking-[0.1em] border border-emerald-100">Kitchen-Friendly</span>
+                )}
+                {meal.tags.slice(0, 2).map((tag, tIdx) => (
+                  <span key={tIdx} className="text-[10px] font-bold text-emerald-900/40 border border-emerald-100 px-4 py-2 rounded-xl uppercase tracking-[0.1em]">{tag}</span>
                 ))}
               </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-10 text-center space-y-4">
-                <IllustrationEmptyPantry />
-                <p className="text-slate-400 font-medium">Your pantry is currently empty.<br/>Add items to get smarter plans.</p>
-              </div>
-            )}
+            </div>
+            <div className="w-14 h-14 rounded-[1.5rem] bg-emerald-50/50 flex items-center justify-center text-emerald-200 group-hover:bg-[#064E3B] group-hover:text-white transition-all shadow-sm">
+               <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 5v.01M12 12v.01M12 19v.01" /></svg>
+            </div>
           </div>
+        ))}
+      </div>
+      <div className="fixed bottom-0 left-0 right-0 p-10 bg-[#FDFCF7]/90 backdrop-blur-2xl border-t border-emerald-50 z-50 flex justify-center">
+        <div className="w-full max-w-lg">
+          <Button onClick={() => showToast("Menu saved to your archives.")}>Finalize Week</Button>
         </div>
       </div>
-      <div className="fixed bottom-0 left-0 right-0 p-8 bg-white/80 backdrop-blur-xl border-t-2 border-slate-50 z-[90]">
-        <Button onClick={() => navigate('DASHBOARD')}>Save & Continue</Button>
-      </div>
+
+      {activeMeal && (
+        <div className="fixed inset-0 bg-[#064E3B]/30 backdrop-blur-xl z-[200] flex items-end justify-center p-6 md:p-10 animate-in fade-in duration-400">
+          <div className="bg-white w-full max-w-lg rounded-[4rem] p-12 shadow-[0_25px_60px_-15px_rgba(6,78,59,0.3)] animate-in slide-in-from-bottom duration-600 max-h-[85vh] overflow-y-auto no-scrollbar">
+            <div className="w-20 h-2 bg-emerald-50 rounded-full mx-auto mb-12" />
+            <div className="mb-12 text-center">
+              <p className="text-xs font-black text-[#D97706] uppercase mb-4 tracking-[0.4em]">{activeMeal.meal.day} selection</p>
+              <h2 className="text-4xl font-serif italic text-emerald-900 leading-[1.2] tracking-tight">{activeMeal.meal.name}</h2>
+            </div>
+            
+            <div className="space-y-12">
+              <div className="space-y-6">
+                <h3 className="text-xs font-bold text-emerald-900/30 uppercase tracking-[0.3em] ml-4">Consider an Alternative</h3>
+                <div className="space-y-4">
+                  {isLoadingSwaps ? (
+                    <div className="space-y-4 animate-pulse">
+                      {[1,2].map(i => <div key={i} className="h-28 bg-emerald-50/40 rounded-[2.5rem]" />)}
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {swapOptions.map((opt, i) => (
+                        <button 
+                          key={i} 
+                          onClick={() => {
+                            const updated = [...mealPlan];
+                            updated[activeMeal!.index] = { ...updated[activeMeal!.index], ...opt } as Meal;
+                            setMealPlan(updated);
+                            setActiveMeal(null);
+                            showToast(`Swapped to ${opt.name}`);
+                          }}
+                          className="w-full p-8 bg-emerald-50/30 rounded-[2.5rem] text-left flex justify-between items-center hover:bg-emerald-50 transition-all border-2 border-transparent hover:border-emerald-100 group shadow-sm"
+                        >
+                          <div className="space-y-2">
+                            <p className="text-xl font-bold text-emerald-900 tracking-tight">{opt.name}</p>
+                            <p className="text-[11px] text-emerald-900/40 font-black uppercase tracking-[0.2em]">{opt.time}m • {opt.isPantryFriendly ? 'Kitchen-Friendly' : 'New List'}</p>
+                          </div>
+                          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                             <svg className="w-5 h-5 text-emerald-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M12 4v16m8-8H4" /></svg>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-6">
+                <Button variant="secondary" className="!rounded-[2rem] !py-6 !text-xs !uppercase !tracking-[0.2em]" onClick={() => showToast("Function coming soon")}>Reschedule</Button>
+                <Button variant="secondary" className="!rounded-[2rem] !py-6 !text-xs !uppercase !tracking-[0.2em]" onClick={() => {
+                  const updated = [...mealPlan];
+                  updated[activeMeal!.index].name = "Dining Out 🥂";
+                  setMealPlan(updated);
+                  setActiveMeal(null);
+                  showToast("Strategic pivot: Dining out.");
+                }}>Dine Out</Button>
+              </div>
+              <Button onClick={() => setActiveMeal(null)} className="!rounded-[2rem] !py-6 !bg-emerald-50 !text-emerald-900 !shadow-none !border-2 !border-emerald-100/50">Keep Selection</Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 
   const renderGenerateLoading = () => (
-    <div className="min-h-screen p-12 bg-slate-900 text-white flex flex-col items-center justify-center text-center">
-      <div className="mb-12">
-        <IllustrationLoading />
+    <div className="min-h-screen p-12 bg-[#064E3B] text-white flex flex-col items-center justify-center text-center page-enter">
+      <div className="relative mb-20">
+        <svg viewBox="0 0 100 100" className="w-40 h-40">
+          <circle cx="50" cy="50" r="45" fill="none" stroke="white" strokeWidth="1.5" strokeDasharray="6 8" className="animate-spin duration-[15s]" />
+          <path d="M30 70 Q50 90 70 70 L75 30 Q50 10 25 30 Z" fill="white" className="animate-bounce" style={{ animationDuration: '2s' }} />
+        </svg>
       </div>
-      <h2 className="text-4xl font-black mb-4 tracking-tighter">Preparing your week...</h2>
-      <p className="text-slate-400 text-lg mb-12 font-medium opacity-80 leading-relaxed max-w-xs">Integrating diet, cooking time, and pantry inventory.</p>
+      <h2 className="text-5xl font-serif italic mb-8 tracking-tight">Culinary Strategy...</h2>
+      <p className="text-emerald-100/70 text-xl mb-16 font-medium max-w-xs leading-relaxed">Synthesizing your stock and preferences into a bespoke weekly menu.</p>
       
-      <div className="h-8 overflow-hidden w-full max-w-[320px] bg-white/5 rounded-full px-6">
+      <div className="h-10 overflow-hidden w-full max-w-[360px] bg-white/10 rounded-full px-10 border border-white/5 backdrop-blur-md">
         <div 
-          className="transition-all duration-700 ease-in-out" 
-          style={{ transform: `translateY(-${loadingHintIndex * 32}px)` }}
+          className="transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1)" 
+          style={{ transform: `translateY(-${loadingHintIndex * 40}px)` }}
         >
           {loadingHints.map((hint, i) => (
-            <p key={i} className="h-8 flex items-center justify-center text-emerald-400 font-black text-xs uppercase tracking-widest">
+            <p key={i} className="h-10 flex items-center justify-center text-emerald-300 font-bold text-xs uppercase tracking-[0.25em]">
               {hint}
             </p>
           ))}
@@ -479,323 +437,123 @@ export default function App() {
     </div>
   );
 
-  const renderWeeklyPlan = () => (
-    <div className="min-h-screen p-6 bg-slate-50 flex flex-col relative overflow-y-auto pb-40 no-scrollbar">
-      <Header title="Your Weekly Dinner" onBack={() => navigate('DASHBOARD')} />
-      <div className="space-y-4 mt-4">
-        {mealPlan.map((meal, idx) => (
-          <div 
-            key={idx} 
-            onClick={() => openSwap(meal, idx)}
-            className="bg-white p-6 rounded-[32px] shadow-sm border-2 border-transparent hover:border-indigo-100 flex gap-5 items-center group active:scale-[0.98] transition-all cursor-pointer animate-in fade-in slide-in-from-bottom duration-500"
-            style={{ animationDelay: `${idx * 80}ms` }}
-          >
-            <div className="flex-1 space-y-2">
-              <div className="flex justify-between items-center">
-                <p className="text-[10px] font-black text-indigo-500 uppercase tracking-[0.2em]">{meal.day}</p>
-                {meal.time > 0 && <span className="text-[10px] font-black bg-slate-100 text-slate-500 px-3 py-1 rounded-full uppercase">{meal.time}m</span>}
-              </div>
-              <h3 className="font-black text-xl text-slate-900 leading-tight tracking-tight">{meal.name}</h3>
-              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pt-1">
-                {meal.isPantryFriendly && (
-                  <span className="text-[9px] font-black text-emerald-600 bg-emerald-50 px-2.5 py-1.5 rounded-lg uppercase border border-emerald-100">Pantry-first</span>
-                )}
-                {meal.time <= 20 && meal.time > 0 && (
-                  <span className="text-[9px] font-black text-indigo-600 bg-indigo-50 px-2.5 py-1.5 rounded-lg uppercase border border-indigo-100">Express</span>
-                )}
-                {meal.tags.slice(0, 2).map((tag, tIdx) => (
-                  <span key={tIdx} className="text-[9px] font-black text-slate-400 bg-slate-50 px-2.5 py-1.5 rounded-lg uppercase border border-slate-100">{tag}</span>
-                ))}
-              </div>
-            </div>
-            <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-300 group-hover:bg-slate-900 group-hover:text-white transition-all">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" /></svg>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="fixed bottom-0 left-0 right-0 p-8 bg-white/80 backdrop-blur-xl border-t-2 border-slate-50 z-[100] space-y-4">
-        <Button onClick={() => showToast("Template saved to your library!")}>Save as Template</Button>
-      </div>
-
-      {activeMeal && (
-        <div className="fixed inset-0 bg-slate-900/60 z-[200] flex items-end justify-center p-6 backdrop-blur-md animate-in fade-in duration-300">
-          <div className="bg-white w-full max-w-md rounded-[48px] p-8 shadow-2xl animate-in slide-in-from-bottom duration-500 flex flex-col max-h-[85vh]">
-            <div className="w-14 h-1.5 bg-slate-100 rounded-full mx-auto mb-8 shrink-0" />
-            
-            {!isMovingDay ? (
-              <div className="overflow-y-auto no-scrollbar pb-4">
-                <div className="mb-10 text-center shrink-0">
-                  <p className="text-[10px] font-black text-indigo-500 uppercase mb-2 tracking-[0.3em]">{activeMeal.meal.day} dinner</p>
-                  <h2 className="text-3xl font-black leading-none text-slate-900 tracking-tighter">{activeMeal.meal.name}</h2>
-                </div>
-                
-                <div className="space-y-8">
-                  <div className="space-y-4">
-                    <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Swap Options</h3>
-                    {isLoadingSwaps ? (
-                       <div className="space-y-3 animate-pulse">
-                         {[1,2,3].map(i => <div key={i} className="h-20 bg-slate-50 rounded-3xl" />)}
-                       </div>
-                    ) : (
-                      <div className="space-y-3">
-                        {swapOptions.map((opt, i) => (
-                          <button 
-                            key={i} 
-                            onClick={() => applySwap(opt)}
-                            className="w-full p-5 bg-slate-50 rounded-3xl text-left flex justify-between items-center hover:bg-slate-100 transition-all border-2 border-transparent active:scale-[0.98]"
-                          >
-                            <div className="space-y-1">
-                              <p className="font-extrabold text-slate-900">{opt.name}</p>
-                              <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">{opt.time}m • {opt.isPantryFriendly ? 'Uses Pantry' : 'Shopping Needed'}</p>
-                            </div>
-                            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm">
-                               <svg className="w-4 h-4 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M12 4v16m8-8H4" /></svg>
-                            </div>
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <button onClick={() => setIsMovingDay(true)} className="p-5 bg-slate-100 rounded-[28px] font-black text-slate-900 text-xs uppercase tracking-widest active:scale-95 transition-all">Move</button>
-                    <button onClick={() => { 
-                      applySwap({ name: "Eating Out 🍕", time: 0, tags: ['Social'], isPantryFriendly: false });
-                    }} className="p-5 bg-indigo-50 text-indigo-600 rounded-[28px] font-black text-xs uppercase tracking-widest active:scale-95 transition-all">Out</button>
-                  </div>
-
-                  <button onClick={() => applySwap({ name: "Unplanned", time: 0, tags: [], isPantryFriendly: false })} className="w-full p-5 text-rose-500 font-black text-xs uppercase tracking-widest active:scale-95">Clear Day</button>
-                  <Button variant="secondary" onClick={() => setActiveMeal(null)}>Close</Button>
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-col h-full overflow-hidden">
-                <div className="text-center mb-10 shrink-0">
-                  <h2 className="text-3xl font-black leading-none text-slate-900 tracking-tighter">Reschedule</h2>
-                  <p className="text-slate-400 font-medium mt-2">Swap with another weekday</p>
-                </div>
-                <div className="grid grid-cols-1 gap-3 overflow-y-auto mb-8 no-scrollbar">
-                  {DAYS.filter(d => d !== activeMeal.meal.day).map(day => (
-                    <button
-                      key={day}
-                      onClick={() => moveMealToDay(day)}
-                      className="w-full p-5 bg-slate-50 rounded-[28px] font-black text-slate-900 text-left hover:bg-slate-100 transition-all active:scale-[0.98] border-2 border-transparent"
-                    >
-                      {day}
-                    </button>
-                  ))}
-                </div>
-                <Button onClick={() => setIsMovingDay(false)}>Cancel</Button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-
-  // --- Added renderScanCamera and renderScanReview to fix missing name errors ---
-
-  const renderScanCamera = () => (
-    <div className="min-h-screen bg-black flex flex-col relative">
-      <video 
-        ref={videoRef} 
-        autoPlay 
-        playsInline 
-        className="flex-1 object-cover"
-      />
-      <canvas ref={canvasRef} className="hidden" />
-      
-      <div className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center bg-gradient-to-b from-black/60 to-transparent">
-        <button onClick={() => navigate('PANTRY')} className="p-3 bg-white/10 backdrop-blur-md rounded-2xl text-white">
-           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" /></svg>
-        </button>
-        <span className="text-white font-black text-xs uppercase tracking-[0.3em]">Scanning Pantry</span>
-        <div className="w-12" />
-      </div>
-
-      <div className="absolute bottom-0 left-0 right-0 p-12 bg-gradient-to-t from-black/60 to-transparent flex flex-col items-center gap-6">
+  const renderPantry = () => (
+    <div className="min-h-screen p-6 bg-[#FDFCF7] page-enter flex flex-col gap-10 overflow-hidden max-w-lg mx-auto">
+      <Header title="Kitchen Stock" onBack={() => navigate('DASHBOARD')} />
+      <div className="flex-1 space-y-12 overflow-y-auto no-scrollbar pb-48">
         <button 
-          onClick={captureAndScan}
-          className="w-20 h-20 bg-white rounded-full border-[6px] border-white/30 flex items-center justify-center active:scale-90 transition-transform"
+          onClick={() => { setScreen('SCAN_CAMERA'); startCamera(); }}
+          className="w-full bg-[#1A1C19] p-12 rounded-[4rem] flex flex-col items-center gap-8 shadow-2xl active:scale-95 transition-all group"
         >
-          <div className="w-14 h-14 bg-white rounded-full border-2 border-slate-900" />
+          <div className="w-24 h-24 bg-white/5 rounded-[2.5rem] flex items-center justify-center backdrop-blur-2xl border border-white/10 group-hover:bg-emerald-500/10 group-hover:border-emerald-500/20 transition-all duration-500">
+            <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+          </div>
+          <div className="text-center">
+            <p className="text-3xl font-serif italic text-white tracking-tight">Visual Scan</p>
+            <p className="text-emerald-100/50 text-xs font-bold uppercase tracking-[0.3em] mt-3">Identify ingredients instantly</p>
+          </div>
         </button>
-        <p className="text-white/60 text-xs font-bold uppercase tracking-widest">Hold steady for better detection</p>
-      </div>
-    </div>
-  );
 
-  const renderScanReview = () => (
-    <div className="min-h-screen p-6 bg-white flex flex-col">
-      <Header title="Scan Results" />
-      <div className="flex-1 space-y-8 overflow-y-auto mt-4 pb-32 no-scrollbar">
-        <div className="space-y-4">
-          <div className="p-6 bg-indigo-50 rounded-[32px] border-2 border-indigo-100 flex items-center gap-5">
-             <div className="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center text-white">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-             </div>
-             <div>
-               <p className="font-black text-indigo-900">AI Detection Complete</p>
-               <p className="text-xs text-indigo-600 font-bold uppercase tracking-widest">{detectedIngredients.length} items found</p>
-             </div>
-          </div>
+        <div className="relative group px-1">
+          <input 
+            className="w-full p-8 pl-20 bg-white rounded-[2.5rem] outline-none border-2 border-emerald-50 focus:border-emerald-200 transition-all font-bold text-lg placeholder:text-emerald-900/15 shadow-sm" 
+            placeholder="Add item manually..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && addCustomPantryItem(searchQuery)}
+          />
+          <svg className="w-8 h-8 absolute left-8 top-1/2 -translate-y-1/2 text-emerald-100 group-focus-within:text-emerald-900 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+        </div>
 
-          <div className="space-y-3">
-            {detectedIngredients.map((name, i) => (
-              <div key={i} className="flex items-center justify-between p-5 bg-slate-50 rounded-2xl border-2 border-transparent">
-                <span className="font-bold text-slate-900 capitalize">{name}</span>
-                <button 
-                  onClick={() => {
-                    togglePantryItem({ name });
-                    setDetectedIngredients(prev => prev.filter(item => item !== name));
-                  }}
-                  className="bg-slate-900 text-white px-4 py-2 rounded-xl text-[10px] font-black"
-                >
-                  ADD
-                </button>
-              </div>
-            ))}
-          </div>
-
-          {detectedIngredients.length === 0 && (
-             <div className="py-20 text-center space-y-4">
-               <p className="text-slate-400 font-medium italic">All detected items processed or none found.</p>
-               <Button variant="secondary" onClick={() => navigate('PANTRY')}>Back to Pantry</Button>
-             </div>
+        <div className="space-y-8">
+          <h3 className="text-[11px] font-black text-emerald-900/20 uppercase tracking-[0.4em] ml-4">Current Tracked ({pantry.length})</h3>
+          {pantry.length > 0 ? (
+            <div className="grid grid-cols-1 gap-5 px-1">
+              {pantry.map(item => (
+                <div key={item.id} className="flex items-center justify-between p-8 bg-white rounded-[2.5rem] border border-emerald-50 shadow-sm animate-in slide-in-from-left duration-400">
+                  <span className="font-bold text-emerald-900 text-xl capitalize tracking-tight">{item.name}</span>
+                  <button onClick={() => togglePantryItem(item)} className="p-4 bg-emerald-50/40 hover:bg-rose-50 hover:text-rose-600 text-emerald-200 rounded-[1.5rem] transition-all duration-300">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3.5" d="M6 18L18 6" /></svg>
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+             <IllustrationEmpty />
           )}
         </div>
       </div>
-      <div className="fixed bottom-0 left-0 right-0 p-8 bg-white/80 backdrop-blur-xl border-t-2 border-slate-50 z-[90]">
-        <Button onClick={() => navigate('PANTRY')}>Finish & Review Pantry</Button>
+      <div className="fixed bottom-0 left-0 right-0 p-10 bg-[#FDFCF7]/90 backdrop-blur-2xl border-t border-emerald-50 z-[90] flex justify-center">
+        <div className="w-full max-w-lg">
+          <Button onClick={() => navigate('DASHBOARD')}>Apply & Sync</Button>
+        </div>
       </div>
     </div>
   );
-
-  const renderProfile = () => (
-    <div className="min-h-screen p-6 bg-slate-50 flex flex-col gap-8 overflow-y-auto pb-20">
-      <Header title="Account" onBack={() => navigate('DASHBOARD')} />
-      
-      <div className="bg-white p-8 rounded-[40px] border-2 border-slate-50 shadow-sm flex items-center gap-6">
-        <div className="w-20 h-20 bg-slate-900 rounded-[28px] flex items-center justify-center text-white text-3xl font-black shadow-2xl">
-          {prefs.name[0]}
-        </div>
-        <div>
-          <h2 className="text-2xl font-black text-slate-900 tracking-tight">{prefs.name}</h2>
-          <p className="text-slate-400 font-bold text-xs uppercase tracking-widest mt-1">{prefs.isLoggedIn ? 'Verified Member' : 'Guest Mode'}</p>
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Configuration</h3>
-        <div className="bg-white rounded-[32px] border-2 border-slate-50 shadow-sm overflow-hidden">
-          {[
-            { label: 'Dietary Preference', value: prefs.diet, screen: 'DIET' },
-            { label: 'Standard Prep Time', value: `${prefs.baseTime}m`, screen: 'TIME_SETUP' },
-            { label: 'Busy-Day Logic', value: Object.keys(prefs.busyDays).length > 0 ? 'Custom' : 'Default', screen: 'TIME_SETUP' }
-          ].map((item, i) => (
-            <button key={i} onClick={() => navigate(item.screen as any)} className="w-full p-6 flex items-center justify-between hover:bg-slate-50 transition-colors border-b last:border-0 border-slate-50 text-left">
-              <span className="font-bold text-slate-700">{item.label}</span>
-              <span className="text-slate-900 font-black text-xs uppercase bg-slate-100 px-3 py-1.5 rounded-lg tracking-widest">{item.value}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="bg-indigo-900 p-8 rounded-[40px] text-white space-y-6 shadow-2xl shadow-indigo-100 relative overflow-hidden">
-        <div className="relative z-10">
-          <h4 className="font-black text-xl mb-4 flex items-center gap-2">
-            <svg className="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            Pro Planning Insights
-          </h4>
-          <div className="space-y-6">
-            <div className="space-y-2">
-               <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Time Efficiency</p>
-               <p className="text-sm font-medium opacity-80 leading-relaxed">Plans fail when time isn't respected. Your current profile optimizes for 30m Express meals.</p>
-            </div>
-            <div className="space-y-2">
-               <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Pantry Utilization</p>
-               <p className="text-sm font-medium opacity-80 leading-relaxed">Users who add 5+ pantry items report 40% higher satisfaction. Scan your fridge weekly.</p>
-            </div>
-          </div>
-        </div>
-        <div className="absolute top-0 right-0 p-6 opacity-10">
-           <svg className="w-24 h-24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <button onClick={() => { localStorage.clear(); window.location.reload(); }} className="w-full p-6 text-slate-400 font-black text-xs uppercase tracking-widest hover:text-rose-500 transition-colors">
-          Reset All Data & Log Out
-        </button>
-      </div>
-    </div>
-  );
-
-  // --- Utility Views ---
 
   const renderWelcome = () => (
-    <div className="min-h-screen flex flex-col p-8 bg-slate-900 text-white selection:bg-indigo-500">
-      <div className="flex-1 flex flex-col justify-center space-y-8">
-        <div className="w-20 h-20 bg-indigo-500 rounded-[28px] flex items-center justify-center shadow-2xl">
-          <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
+    <div className="min-h-screen flex flex-col p-12 bg-[#064E3B] text-white page-enter">
+      <div className="flex-1 flex flex-col justify-center space-y-16">
+        <div className="w-28 h-28 bg-white/5 rounded-[3rem] flex items-center justify-center shadow-[0_20px_40px_rgba(0,0,0,0.2)] border border-white/10">
+          <svg className="w-14 h-14 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
         </div>
-        <div className="space-y-3">
-          <h2 className="text-5xl font-black leading-none tracking-tighter">Let's build your profile.</h2>
-          <p className="text-xl text-slate-400 font-medium leading-relaxed">Two quick questions and we'll have your first week planned.</p>
+        <div className="space-y-8">
+          <h2 className="text-6xl font-serif italic leading-[1.1] tracking-tight">Setting the stage.</h2>
+          <p className="text-2xl text-emerald-100/60 font-medium leading-relaxed max-w-sm">Answer two foundational questions to begin your journey.</p>
         </div>
       </div>
-      <div className="pb-10">
-        <Button className="!bg-white !text-slate-900" onClick={() => navigate('DIET')}>Get Started</Button>
+      <div className="pb-12">
+        <Button className="!bg-white !text-[#064E3B] !py-6" onClick={() => navigate('DIET')}>Commence</Button>
       </div>
     </div>
   );
 
   const renderDiet = () => (
-    <div className="min-h-screen p-8 bg-white flex flex-col">
-      <div className="flex-1 space-y-12 mt-16">
-        <div className="space-y-3 text-center">
-          <h2 className="text-4xl font-black text-slate-900 tracking-tighter">Your dietary lens?</h2>
-          <p className="text-slate-500 font-medium">We only suggest what you love to eat.</p>
+    <div className="min-h-screen p-10 bg-[#FDFCF7] flex flex-col page-enter max-w-lg mx-auto">
+      <div className="flex-1 space-y-20 mt-24">
+        <div className="space-y-6 text-center">
+          <h2 className="text-5xl font-serif italic text-emerald-900 leading-tight tracking-tight">Your preference?</h2>
+          <p className="text-emerald-900/40 font-bold uppercase tracking-[0.3em] text-[11px]">Primary dietary lens</p>
         </div>
-        <div className="grid grid-cols-1 gap-3">
+        <div className="grid grid-cols-1 gap-5">
           {(['Vegetarian', 'Non-veg', 'Egg-only', 'Vegan'] as DietType[]).map(type => (
             <button
               key={type}
               onClick={() => setPrefs(p => ({ ...p, diet: type }))}
-              className={`p-6 rounded-3xl text-left font-black tracking-tight border-2 transition-all active:scale-95 ${
-                prefs.diet === type ? 'border-slate-900 bg-slate-900 text-white shadow-xl' : 'border-slate-50 bg-slate-50 text-slate-400 hover:border-slate-100'
+              className={`p-10 rounded-[3rem] text-left font-bold tracking-tight border-2 transition-all duration-400 group active:scale-[0.98] ${
+                prefs.diet === type ? 'border-[#064E3B] bg-[#064E3B] text-white shadow-2xl' : 'border-emerald-50 bg-white text-emerald-900/30 hover:border-emerald-100'
               }`}
             >
-              {type}
+              <div className="flex items-center justify-between">
+                <span className="text-xl">{type}</span>
+                {prefs.diet === type && <svg className="w-8 h-8 text-emerald-300 animate-in zoom-in duration-300" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>}
+              </div>
             </button>
           ))}
         </div>
       </div>
-      <div className="pb-10 pt-4">
+      <div className="pb-16 pt-10">
         <Button onClick={() => navigate('TIME_SETUP')}>Continue</Button>
       </div>
     </div>
   );
 
   const renderTimeSetup = () => (
-    <div className="min-h-screen p-8 bg-white flex flex-col">
-      <div className="flex-1 space-y-12 mt-16 overflow-y-auto no-scrollbar">
-        <div className="space-y-3 text-center">
-          <h2 className="text-4xl font-black text-slate-900 tracking-tighter">Cooking window?</h2>
-          <p className="text-slate-500 font-medium">Average time you commit to dinner.</p>
+    <div className="min-h-screen p-10 bg-[#FDFCF7] flex flex-col page-enter max-w-lg mx-auto">
+      <div className="flex-1 space-y-20 mt-24 overflow-y-auto no-scrollbar">
+        <div className="space-y-6 text-center">
+          <h2 className="text-5xl font-serif italic text-emerald-900 leading-tight tracking-tight">Available time?</h2>
+          <p className="text-emerald-900/40 font-bold uppercase tracking-[0.3em] text-[11px]">Average nightly commitment</p>
         </div>
         
-        <div className="space-y-8">
-          <div className="flex gap-3">
+        <div className="space-y-16">
+          <div className="flex gap-5">
             {[15, 30, 45].map(t => (
               <button
                 key={t}
                 onClick={() => setPrefs(p => ({ ...p, baseTime: t }))}
-                className={`flex-1 py-6 px-2 rounded-3xl border-2 font-black text-sm tracking-widest ${
-                  prefs.baseTime === t ? 'bg-slate-900 border-slate-900 text-white shadow-xl' : 'bg-slate-50 border-slate-50 text-slate-400'
+                className={`flex-1 py-10 px-6 rounded-[3rem] border-2 font-black text-[13px] tracking-[0.25em] transition-all duration-400 active:scale-[0.95] ${
+                  prefs.baseTime === t ? 'bg-[#064E3B] border-[#064E3B] text-white shadow-2xl' : 'bg-white border-emerald-50 text-emerald-900/20'
                 }`}
               >
                 {t}{t === 45 ? '+' : ''} MIN
@@ -803,31 +561,31 @@ export default function App() {
             ))}
           </div>
 
-          <div className="p-6 bg-slate-50 rounded-[32px] flex items-center justify-between border-2 border-slate-50">
+          <div className="p-10 bg-white rounded-[3.5rem] flex items-center justify-between border border-emerald-50 shadow-md">
             <div>
-              <p className="font-black text-slate-900 tracking-tight">Busy-day override</p>
-              <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-0.5">Adjust for specific days</p>
+              <p className="font-bold text-emerald-900 text-xl tracking-tight">Busy-day logic</p>
+              <p className="text-[11px] text-emerald-900/30 font-black uppercase tracking-[0.3em] mt-2">Specific day overrides</p>
             </div>
             <button 
               onClick={() => setIsBusyToggle(!isBusyToggle)}
-              className={`w-14 h-8 rounded-full transition-all relative ${isBusyToggle ? 'bg-slate-900' : 'bg-slate-200'}`}
+              className={`w-16 h-10 rounded-full transition-all duration-500 relative ${isBusyToggle ? 'bg-[#064E3B]' : 'bg-emerald-100'}`}
             >
-              <div className={`absolute top-1 w-6 h-6 bg-white rounded-full transition-all shadow-sm ${isBusyToggle ? 'right-1' : 'left-1'}`} />
+              <div className={`absolute top-1.5 w-7 h-7 bg-white rounded-full transition-all duration-500 shadow-md ${isBusyToggle ? 'right-1.5' : 'left-1.5'}`} />
             </button>
           </div>
 
           {isBusyToggle && (
-            <div className="space-y-3 pb-4 animate-in slide-in-from-top-4 fade-in duration-300">
+            <div className="space-y-5 pb-10 animate-in slide-in-from-top-6 fade-in duration-500">
               {['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map(day => (
-                <div key={day} className="flex items-center justify-between p-3 bg-slate-50/50 rounded-2xl">
-                  <span className="font-black text-slate-400 text-xs uppercase tracking-widest ml-3">{day}</span>
-                  <div className="flex gap-2">
+                <div key={day} className="flex items-center justify-between p-6 bg-emerald-50/20 rounded-[2.5rem] border border-emerald-50/50">
+                  <span className="font-bold text-emerald-900/40 text-[11px] uppercase tracking-[0.4em] ml-6">{day}</span>
+                  <div className="flex gap-3">
                     {[15, 30, 45].map(t => (
                       <button 
                         key={t}
                         onClick={() => setPrefs(p => ({ ...p, busyDays: { ...p.busyDays, [day]: t } }))}
-                        className={`w-12 h-10 text-[10px] rounded-xl font-black border-2 transition-all ${
-                          (prefs.busyDays[day] || prefs.baseTime) === t ? 'bg-slate-900 border-slate-900 text-white' : 'bg-white border-slate-100 text-slate-300'
+                        className={`w-14 h-12 text-[10px] rounded-2xl font-black border-2 transition-all duration-300 ${
+                          (prefs.busyDays[day] || prefs.baseTime) === t ? 'bg-[#064E3B] border-[#064E3B] text-white shadow-lg' : 'bg-white border-emerald-50 text-emerald-100'
                         }`}
                       >
                         {t}
@@ -840,33 +598,165 @@ export default function App() {
           )}
         </div>
       </div>
-      <div className="pb-10 pt-4">
-        <Button onClick={() => navigate('DASHBOARD')}>Build Profile</Button>
+      <div className="pb-16 pt-10">
+        <Button onClick={() => navigate('DASHBOARD')}>Establish Profile</Button>
       </div>
     </div>
   );
 
-  return (
-    <div className="max-w-md mx-auto bg-white shadow-2xl overflow-hidden relative min-h-screen flex flex-col font-sans">
-      <div className="flex-1 h-full">
-        {(() => {
-          switch (screen) {
-            case 'SPLASH': return renderSplash();
-            case 'WELCOME': return renderWelcome();
-            case 'DIET': return renderDiet();
-            case 'TIME_SETUP': return renderTimeSetup();
-            case 'DASHBOARD': return renderDashboard();
-            case 'PANTRY': return renderPantry();
-            case 'SCAN_CAMERA': return renderScanCamera();
-            case 'SCAN_REVIEW': return renderScanReview();
-            case 'GENERATE_LOADING': return renderGenerateLoading();
-            case 'WEEKLY_PLAN': return renderWeeklyPlan();
-            case 'PROFILE': return renderProfile();
-            default: return renderSplash();
-          }
-        })()}
+  const renderProfile = () => (
+    <div className="min-h-screen p-6 bg-[#FDFCF7] page-enter flex flex-col gap-12 overflow-y-auto no-scrollbar pb-32 max-w-lg mx-auto">
+      <Header title="Account" onBack={() => navigate('DASHBOARD')} />
+      
+      <div className="bg-white p-12 rounded-[4rem] border border-emerald-50 shadow-sm flex items-center gap-10">
+        <div className="w-28 h-28 bg-[#064E3B] rounded-[3rem] flex items-center justify-center text-white text-5xl font-serif italic shadow-2xl">
+          {prefs.name[0]}
+        </div>
+        <div>
+          <h2 className="text-4xl font-serif italic text-emerald-900 leading-none">{prefs.name}</h2>
+          <p className="text-emerald-900/30 font-bold text-[11px] uppercase tracking-[0.4em] mt-5">Member Tier: Prime</p>
+        </div>
       </div>
-      {toast && <Toast message={toast} onClear={() => setToast(null)} />}
+
+      <div className="space-y-6">
+        <h3 className="text-[11px] font-black text-emerald-900/20 uppercase tracking-[0.4em] ml-4">Strategic Tuning</h3>
+        <div className="bg-white rounded-[3rem] border border-emerald-50 shadow-md overflow-hidden">
+          {[
+            { label: 'Dietary Selection', val: prefs.diet, screen: 'DIET' },
+            { label: 'Standard Prep', val: `${prefs.baseTime}m`, screen: 'TIME_SETUP' },
+            { label: 'Logic pattern', val: Object.keys(prefs.busyDays).length > 0 ? 'Custom' : 'Standard', screen: 'TIME_SETUP' }
+          ].map((item, i) => (
+            <button key={i} onClick={() => navigate(item.screen as any)} className="w-full p-10 flex items-center justify-between hover:bg-emerald-50/30 transition-all border-b last:border-0 border-emerald-50 text-left group">
+              <span className="font-bold text-emerald-900 text-lg tracking-tight group-hover:translate-x-1 transition-transform">{item.label}</span>
+              <span className="text-[#064E3B] font-black text-[11px] uppercase bg-emerald-50 px-5 py-2.5 rounded-xl tracking-[0.2em]">{item.val}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="bg-[#1A1C19] p-12 rounded-[4rem] text-white space-y-12 shadow-2xl relative overflow-hidden">
+        <div className="relative z-10">
+          <h4 className="font-serif italic text-3xl mb-8 text-emerald-300">Strategic Insights</h4>
+          <div className="space-y-10">
+            <div className="space-y-4">
+               <p className="text-[11px] font-black text-emerald-400 uppercase tracking-[0.3em]">Temporal Efficiency</p>
+               <p className="text-base font-medium opacity-60 leading-relaxed italic">Prep times under 30m offer the optimal balance between culinary variety and weekly sustainability.</p>
+            </div>
+            <div className="space-y-4">
+               <p className="text-[11px] font-black text-emerald-400 uppercase tracking-[0.3em]">Inventory Health</p>
+               <p className="text-base font-medium opacity-60 leading-relaxed italic">Active tracking of 5+ staple ingredients improves AI accuracy by approximately 40%.</p>
+            </div>
+          </div>
+        </div>
+        <div className="absolute top-0 right-0 p-10 opacity-5">
+           <svg className="w-48 h-48" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
+        </div>
+      </div>
+
+      <div className="mt-8">
+        <button onClick={() => { localStorage.clear(); window.location.reload(); }} className="w-full p-10 text-emerald-900/30 font-black text-[11px] uppercase tracking-[0.5em] hover:text-rose-600 transition-colors duration-300 active:scale-95">
+          Purge Data & Reset
+        </button>
+      </div>
+    </div>
+  );
+
+  const renderScanCamera = () => (
+    <div className="min-h-screen bg-black flex flex-col relative page-enter">
+      <video ref={videoRef} autoPlay playsInline className="flex-1 object-cover" />
+      <canvas ref={canvasRef} className="hidden" />
+      
+      <div className="absolute top-0 left-0 right-0 p-12 flex justify-between items-center bg-gradient-to-b from-black/90 to-transparent">
+        <button onClick={() => navigate('PANTRY')} className="w-14 h-14 flex items-center justify-center bg-white/10 backdrop-blur-2xl rounded-2xl text-white border border-white/20 hover:bg-white/20 active:scale-90 transition-all">
+           <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M15 19l-7-7 7-7" /></svg>
+        </button>
+        <span className="text-white font-black text-[11px] uppercase tracking-[0.5em]">Inventory Analysis</span>
+        <div className="w-14" />
+      </div>
+
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="w-72 h-96 border-2 border-white/10 rounded-[4rem] relative shadow-[0_0_100px_rgba(255,255,255,0.05)]">
+          <div className="absolute -top-1.5 -left-1.5 w-14 h-14 border-t-4 border-l-4 border-emerald-400 rounded-tl-[1.5rem]" />
+          <div className="absolute -top-1.5 -right-1.5 w-14 h-14 border-t-4 border-r-4 border-emerald-400 rounded-tr-[1.5rem]" />
+          <div className="absolute -bottom-1.5 -left-1.5 w-14 h-14 border-b-4 border-l-4 border-emerald-400 rounded-bl-[1.5rem]" />
+          <div className="absolute -bottom-1.5 -right-1.5 w-14 h-14 border-b-4 border-r-4 border-emerald-400 rounded-br-[1.5rem]" />
+        </div>
+      </div>
+
+      <div className="absolute bottom-0 left-0 right-0 p-20 bg-gradient-to-t from-black/90 to-transparent flex flex-col items-center gap-12">
+        <button 
+          onClick={captureAndScan}
+          className="w-28 h-28 bg-white rounded-full border-[10px] border-white/20 flex items-center justify-center active:scale-75 transition-all shadow-[0_0_50px_rgba(255,255,255,0.3)] group"
+        >
+          <div className="w-20 h-20 bg-white rounded-full border-[3px] border-[#1A1C19] group-hover:scale-90 transition-transform" />
+        </button>
+        <p className="text-white/40 text-[11px] font-black uppercase tracking-[0.4em]">Align contents within the frame</p>
+      </div>
+    </div>
+  );
+
+  const renderScanReview = () => (
+    <div className="min-h-screen p-10 bg-[#FDFCF7] flex flex-col page-enter max-w-lg mx-auto">
+      <Header title="Identified Stock" />
+      <div className="flex-1 space-y-12 overflow-y-auto no-scrollbar mt-8 pb-48">
+        <div className="p-10 bg-white rounded-[3.5rem] border border-emerald-50 flex items-center gap-8 shadow-md">
+           <div className="w-20 h-20 bg-[#064E3B] rounded-[2rem] flex items-center justify-center text-white shadow-lg">
+              <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+           </div>
+           <div>
+             <p className="text-2xl font-bold text-emerald-900 tracking-tight leading-none">Indexing Complete</p>
+             <p className="text-[11px] text-emerald-900/40 font-black uppercase tracking-[0.3em] mt-3">{detectedIngredients.length} Items Detected</p>
+           </div>
+        </div>
+
+        <div className="space-y-6">
+          {detectedIngredients.map((name, i) => (
+            <div key={i} className="flex items-center justify-between p-8 bg-white rounded-[2.5rem] border border-emerald-50 shadow-sm transition-all hover:translate-x-1">
+              <span className="font-bold text-emerald-900 text-xl capitalize tracking-tight">{name}</span>
+              <button 
+                onClick={() => { togglePantryItem({ name }); setDetectedIngredients(prev => prev.filter(item => item !== name)); }}
+                className="bg-[#064E3B] text-white px-8 py-3 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] shadow-lg active:scale-95 transition-all"
+              >
+                Add
+              </button>
+            </div>
+          ))}
+        </div>
+        {detectedIngredients.length === 0 && <IllustrationEmpty />}
+      </div>
+      <div className="fixed bottom-0 left-0 right-0 p-10 bg-[#FDFCF7]/90 backdrop-blur-2xl border-t border-emerald-50 z-[90] flex justify-center">
+        <div className="w-full max-w-lg">
+          <Button onClick={() => navigate('PANTRY')}>Finalize Stock</Button>
+        </div>
+      </div>
+    </div>
+  );
+
+  // --- Router ---
+
+  return (
+    <div className="min-h-screen bg-[#F1F3EF] flex items-center justify-center">
+      <div className="w-full max-w-lg bg-white shadow-2xl relative min-h-screen flex flex-col overflow-hidden transition-all duration-700">
+        <div className="flex-1 h-full no-scrollbar">
+          {(() => {
+            switch (screen) {
+              case 'SPLASH': return renderSplash();
+              case 'WELCOME': return renderWelcome();
+              case 'DIET': return renderDiet();
+              case 'TIME_SETUP': return renderTimeSetup();
+              case 'DASHBOARD': return renderDashboard();
+              case 'PANTRY': return renderPantry();
+              case 'SCAN_CAMERA': return renderScanCamera();
+              case 'SCAN_REVIEW': return renderScanReview();
+              case 'GENERATE_LOADING': return renderGenerateLoading();
+              case 'WEEKLY_PLAN': return renderWeeklyPlan();
+              case 'PROFILE': return renderProfile();
+              default: return renderSplash();
+            }
+          })()}
+        </div>
+        {toast && <Toast message={toast} onClear={() => setToast(null)} />}
+      </div>
     </div>
   );
 }
